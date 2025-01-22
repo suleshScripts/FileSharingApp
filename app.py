@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, url_for, send_from_directory,
 from werkzeug.utils import secure_filename
 
 # Flask app initialization
-app = Flask(__name__)
+app = Flask(__name__, template_folder='Templates')
 
 # Configuration
 UPLOAD_FOLDER = "static/uploads"
