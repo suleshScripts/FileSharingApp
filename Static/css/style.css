@@ -1,0 +1,199 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Orbitron", sans-serif;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
+}
+
+#particle-network {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s ease-in-out;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#main-title {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #00ffff, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;
+  }
+  to {
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+  }
+}
+
+#tagline {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.container {
+  width: 90%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #00ffff;
+}
+
+.upload-box {
+  border: 2px dashed #00ffff;
+  border-radius: 8px;
+  padding: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-box:hover,
+.upload-box.dragover {
+  background-color: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 15px #00ffff;
+}
+
+.upload-box p {
+  color: #fff;
+}
+
+#fileInput {
+  display: none;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: rgba(0, 255, 255, 0.2);
+  color: #fff;
+  border: 2px solid #00ffff;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Orbitron", sans-serif;
+}
+
+.btn:hover {
+  background-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 15px #00ffff;
+}
+
+.qr-container {
+  margin-top: 20px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.qr-container img {
+  max-width: 200px;
+  height: auto;
+  margin-top: 10px;
+  border: 1px solid #00ffff;
+  border-radius: 5px;
+}
+
+.qr-container a {
+  color: #00ffff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.qr-container a:hover {
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.progress-bar-container {
+  display: none;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  width: 0;
+  background: #00ffff;
+  transition: width 0.3s ease;
+}
+
+.transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.transition-line {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background-color: #00ffff;
+  transform: scaleY(0);
+  animation: lineAnimation 1.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes lineAnimation {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
