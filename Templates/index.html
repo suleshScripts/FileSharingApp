@@ -3,211 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Sharing App</title>
-    <style>
-        /* Add your CSS styles here */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f3f4f6;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 600px;
-            background: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-            color: #333333;
-        }
-
-        .upload-box {
-            border: 2px dashed #007bff;
-            border-radius: 8px;
-            padding: 30px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .upload-box:hover {
-            background-color: #f0f8ff;
-        }
-
-        .upload-box.dragover {
-            background-color: #d1e7ff;
-        }
-
-        .upload-box p {
-            color: #555555;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #007bff;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-
-        .qr-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .qr-container img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .progress-bar-container {
-            display: none;
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        .progress-bar {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
-            height: 10px;
-        }
-
-        .progress-bar-inner {
-            height: 100%;
-            width: 0;
-            background: #007bff;
-            transition: width 0.3s ease;
-        }
-    </style>
+    <title>Quantum Share - Futuristic File Sharing</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>File Sharing App</h1>
-        <form id="uploadForm" method="POST" enctype="multipart/form-data">
-            <div class="upload-box" id="dropZone">
-                <p>Drag & Drop your file here or click to upload</p>
-                <input type="file" name="file" id="fileInput" accept="*" />
-            </div>
-            <div class="progress-bar-container" id="progressBarContainer">
-                <div class="progress-bar">
-                    <div class="progress-bar-inner" id="progressBar"></div>
-                </div>
-            </div>
-            <button class="btn" type="submit">Upload File</button>
-        </form>
-
-        {% if qr_image %}
-        <div class="qr-container">
-            <h2>QR Code:</h2>
-            <img src="{{ qr_image }}" alt="QR Code">
-            <p><a href="{{ file_url }}" target="_blank">Download File</a></p>
-        </div>
-        {% endif %}
+    <canvas id="particle-network"></canvas>
+    <div id="welcome-screen" class="fullscreen">
+        <h1 id="main-title">Quantum Share</h1>
+        <p id="tagline">The Future of File Sharing is Here</p>
+        <button id="enter-app-btn" class="btn">Enter the Quantum Realm</button>
     </div>
+    <div id="app-interface" class="fullscreen hidden">
+        <div class="container">
+            <h1>Quantum File Transfer</h1>
+            <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                <div class="upload-box" id="dropZone">
+                    <p>Drag & Drop your file here or click to upload</p>
+                    <input type="file" name="file" id="fileInput" accept="*" />
+                </div>
+                <div class="progress-bar-container" id="progressBarContainer">
+                    <div class="progress-bar">
+                        <div class="progress-bar-inner" id="progressBar"></div>
+                    </div>
+                </div>
+                <button class="btn" type="submit">Quantum Transfer</button>
+            </form>
 
-    <script>
-        const dropZone = document.getElementById("dropZone");
-        const fileInput = document.getElementById("fileInput");
-        const uploadForm = document.getElementById("uploadForm");
-        const progressBarContainer = document.getElementById("progressBarContainer");
-        const progressBar = document.getElementById("progressBar");
-
-        // Trigger file input click when clicking on the drop zone
-        dropZone.addEventListener("click", () => {
-            fileInput.click();
-        });
-
-        // Handle drag and drop events
-        dropZone.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            dropZone.classList.add("dragover");
-        });
-
-        dropZone.addEventListener("dragleave", () => {
-            dropZone.classList.remove("dragover");
-        });
-
-        dropZone.addEventListener("drop", (e) => {
-            e.preventDefault();
-            dropZone.classList.remove("dragover");
-            fileInput.files = e.dataTransfer.files;
-        });
-
-        // Handle file upload
-        uploadForm.addEventListener("submit", function (e) {
-            e.preventDefault(); // Prevent traditional form submission
-
-            const file = fileInput.files[0];
-            if (!file) {
-                alert("Please select a file first.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "/");
-
-            // Show progress bar
-            progressBarContainer.style.display = "block";
-
-            // Update progress bar during upload
-            xhr.upload.addEventListener("progress", function (e) {
-                if (e.lengthComputable) {
-                    const percent = (e.loaded / e.total) * 100;
-                    progressBar.style.width = percent + "%";
-                }
-            });
-
-            // Handle response
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    // Display QR code and file URL
-                    const qrContainer = document.createElement("div");
-                    qrContainer.className = "qr-container";
-                    qrContainer.innerHTML = `
-                        <h2>QR Code:</h2>
-                        <img src="${response.qr_image}" alt="QR Code">
-                        <p><a href="${response.file_url}" target="_blank">Download File</a></p>
-                    `;
-                    document.body.appendChild(qrContainer);
-                } else {
-                    alert("Error uploading file. Please try again.");
-                }
-            };
-
-            xhr.send(formData);
-        });
-    </script>
+            {% if qr_image %}
+            <div class="qr-container">
+                <h2>QR Code:</h2>
+                <img src="{{ qr_image }}" alt="QR Code">
+                <p><a href="{{ file_url }}" target="_blank">Download File</a></p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>
+
